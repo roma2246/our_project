@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64">
+  <!-- Круглый фон -->
+  <circle cx="32" cy="32" r="30" fill="#006837" />
+  
+  <!-- Буква К -->
+  <path d="M20 16 L20 48 L28 48 L28 34 L38 48 L48 48 L35 32 L48 16 L38 16 L28 32 L28 16 Z" fill="white" />
+  
+  <!-- Круговой эффект свечения при наведении -->
+  <style>
+    @media (prefers-reduced-motion: no-preference) {
+      circle {
+        animation: pulse 2s infinite;
+      }
+    }
+    @keyframes pulse {
+      0% { opacity: 1; }
+      50% { opacity: 0.9; }
+      100% { opacity: 1; }
+    }
+  </style>
+</svg> 

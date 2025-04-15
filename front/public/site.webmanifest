@@ -1,0 +1,16 @@
+{
+  "name": "Кәсіпкер",
+  "short_name": "Кәсіпкер",
+  "description": "Кірістер мен шығыстарды бақылау жүйесі",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#006837",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "64x64 32x32 24x24 16x16",
+      "type": "image/svg+xml"
+    }
+  ]
+} 
