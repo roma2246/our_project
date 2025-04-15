@@ -73,119 +73,107 @@ const RegisterPage = () => {
     }
   };
 
+  // Define styles with animation delays
+  const titleStyles = { ...styles.formTitle, animationDelay: '0.3s' };
+  const usernameGroupStyles = { ...styles.inputGroup, animationDelay: '0.4s' };
+  const emailGroupStyles = { ...styles.inputGroup, animationDelay: '0.5s' };
+  const passwordGroupStyles = { ...styles.inputGroup, animationDelay: '0.6s' };
+  const confirmPasswordGroupStyles = { ...styles.inputGroup, animationDelay: '0.7s' };
+  const loginLinkStyles = { ...styles.loginLink, animationDelay: '1s' };
+  const overlayHeadingStyles = { animationDelay: '0.3s' };
+  const overlayParaStyles = { animationDelay: '0.5s' };
+
   return (
     <div className={`auth-page ${appear ? 'fade-in' : ''}`} style={styles.authPage}>
-      <div className="auth-container" style={styles.authContainer}>
-        <div className="auth-left" style={styles.authLeft}>
-          <div className="auth-content" style={styles.authContent}>
-            <div className="logo-container" style={styles.logoContainer}>
-              <img src="/favicon.svg" alt="Кәсіпкер логотипі" style={styles.logo} />
-            </div>
-            <h1 style={styles.title}>Тіркелу</h1>
-            <p style={styles.subtitle}>Жаңа аккаунт жасаңыз</p>
-            
+      <div className={`${appear ? 'scale-up' : ''}`} style={styles.authContainer}>
+        <div className={`${appear ? 'slide-from-left' : ''}`} style={styles.formSide}>
+          <div style={styles.formContainer}>
+            <h2 className="animated-element slide-from-top" style={titleStyles}>ТІРКЕЛУ</h2>
             {success ? (
-              <div style={styles.successMessage}>
-                <div style={styles.successIcon}>✓</div>
+              <div style={styles.successMessage} className="animated-element pulse">
+                <div className="animated-element bounce" style={{animationDelay: '0.2s'}}>✓</div>
                 <p>{success}</p>
                 <p>Кіру бетіне ауысу...</p>
               </div>
             ) : (
-      <form onSubmit={handleSubmit} style={styles.form}>
-        <div style={styles.inputGroup}>
-                  <div style={styles.inputWrapper}>
-                    <i className="fas fa-user" style={styles.inputIcon}></i>
-          <input
-            type="text"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            style={styles.input}
-                      placeholder="Пайдаланушы аты"
-            required
-          />
-        </div>
+              <form onSubmit={handleSubmit} style={styles.form}>
+                <div className="animated-element slide-from-right" style={usernameGroupStyles}>
+                  <label htmlFor="username" style={styles.label}>Пайдаланушы аты</label>
+                  <input
+                    type="text"
+                    id="username"
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
+                    style={styles.input}
+                    placeholder="Пайдаланушы аты"
+                    className="hover-shadow"
+                    required
+                  />
                 </div>
-                
-        <div style={styles.inputGroup}>
-                  <div style={styles.inputWrapper}>
-                    <i className="fas fa-envelope" style={styles.inputIcon}></i>
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            style={styles.input}
-                      placeholder="Электрондық пошта"
-            required
-          />
-        </div>
+                <div className="animated-element slide-from-right" style={emailGroupStyles}>
+                  <label htmlFor="email" style={styles.label}>Электрондық пошта</label>
+                  <input
+                    type="email"
+                    id="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    style={styles.input}
+                    placeholder="email@example.com"
+                    className="hover-shadow"
+                    required
+                  />
                 </div>
-                
-        <div style={styles.inputGroup}>
-                  <div style={styles.inputWrapper}>
-                    <i className="fas fa-lock" style={styles.inputIcon}></i>
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            style={styles.input}
-                      placeholder="Құпия сөз"
-                      required
-                    />
-                  </div>
+                <div className="animated-element slide-from-right" style={passwordGroupStyles}>
+                  <label htmlFor="password" style={styles.label}>Құпия сөз</label>
+                  <input
+                    type="password"
+                    id="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    style={styles.input}
+                    placeholder="••••••••"
+                    className="hover-shadow"
+                    required
+                  />
                 </div>
-                
-                <div style={styles.inputGroup}>
-                  <div style={styles.inputWrapper}>
-                    <i className="fas fa-lock" style={styles.inputIcon}></i>
-                    <input
-                      type="password"
-                      value={confirmPassword}
-                      onChange={(e) => setConfirmPassword(e.target.value)}
-                      style={styles.input}
-                      placeholder="Құпия сөзді қайталаңыз"
-            required
-          />
-        </div>
+                <div className="animated-element slide-from-right" style={confirmPasswordGroupStyles}>
+                  <label htmlFor="confirmPassword" style={styles.label}>Құпия сөзді қайталаңыз</label>
+                  <input
+                    type="password"
+                    id="confirmPassword"
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    style={styles.input}
+                    placeholder="••••••••"
+                    className="hover-shadow"
+                    required
+                  />
                 </div>
-                
-                {error && <p style={styles.errorMessage}>{error}</p>}
-                
+                {error && <p style={styles.errorMessage} className="shake">{error}</p>}
                 <button 
                   type="submit" 
-                  style={styles.submitButton}
+                  style={{...styles.submitButton, animationDelay: '0.8s'}}
+                  className="animated-element fade-in hover-shadow"
                   disabled={loading}
                 >
-                  {loading ? 'Күте тұрыңыз...' : 'Тіркелу'}
+                  {loading ? (
+                    <span className="pulse">Күте тұрыңыз...</span>
+                  ) : (
+                    'ТІРКЕЛУ'
+                  )}
                 </button>
-                
-                <p style={styles.loginLink}>
-                  Аккаунтыңыз бар ма? <Link to="/login" style={styles.link}>Кіру</Link>
+                <p className="animated-element fade-in" style={loginLinkStyles}>
+                  Аккаунтыңыз бар ма? <Link to="/login" style={styles.link} className="hover-scale">Кіру</Link>
                 </p>
-      </form>
+              </form>
             )}
           </div>
         </div>
-        
-        <div className="auth-right" style={styles.authRight}>
+        <div className={`${appear ? 'slide-from-right' : ''}`} style={styles.imgSide}>
           <div style={styles.overlay}>
             <div style={styles.overlayContent}>
-              <h2 style={styles.overlayTitle}>Қош келдіңіз</h2>
-              <p style={styles.overlayText}>Тіркеліп, бизнесіңізді басқаруды бастаңыз</p>
-              
-              <div style={styles.features}>
-                <div style={styles.featureItem}>
-                  <i className="fas fa-chart-line" style={styles.featureIcon}></i>
-                  <span style={styles.featureText}>Қаржылық бақылау</span>
-                </div>
-                <div style={styles.featureItem}>
-                  <i className="fas fa-file-invoice-dollar" style={styles.featureIcon}></i>
-                  <span style={styles.featureText}>Есептер</span>
-                </div>
-                <div style={styles.featureItem}>
-                  <i className="fas fa-chart-pie" style={styles.featureIcon}></i>
-                  <span style={styles.featureText}>Талдау</span>
-                </div>
-              </div>
+              <h2 className="animated-element slide-from-bottom" style={overlayHeadingStyles}>Қош келдіңіз</h2>
+              <p className="animated-element slide-from-bottom" style={overlayParaStyles}>Тіркеліп, бизнесіңізді басқаруды бастаңыз</p>
             </div>
           </div>
         </div>
@@ -200,8 +188,8 @@ const styles = {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
+    backgroundColor: '#f5f5f5',
     padding: '20px',
-    background: 'linear-gradient(135deg, #f5f7fa 0%, #e0e8f0 100%)',
     transition: 'opacity 0.5s ease-in-out',
     opacity: 0,
   },
@@ -209,121 +197,21 @@ const styles = {
     display: 'flex',
     width: '100%',
     maxWidth: '1000px',
-    height: '600px',
-    boxShadow: '0 15px 35px rgba(0, 0, 0, 0.15)',
-    borderRadius: '15px',
+    height: '700px',
+    boxShadow: '0 10px 30px rgba(0, 0, 0, 0.1)',
+    backgroundColor: '#fff',
     overflow: 'hidden',
-    backgroundColor: '#fff',
+    transition: 'all 0.5s ease-in-out',
+    transform: 'scale(0.95)',
   },
-  authLeft: {
-    flex: '1',
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    padding: '40px',
-    backgroundColor: '#fff',
-  },
-  authContent: {
-    width: '100%',
-    maxWidth: '400px',
-    margin: '0 auto',
-  },
-  logoContainer: {
-    display: 'flex',
-    justifyContent: 'center',
-    marginBottom: '20px',
-  },
-  logo: {
-    width: '60px',
-    height: '60px',
-  },
-  title: {
-    textAlign: 'center',
-    marginBottom: '10px',
-    color: '#333',
-    fontSize: '2rem',
-    fontWeight: '700',
-  },
-  subtitle: {
-    textAlign: 'center',
-    marginBottom: '30px',
-    color: '#666',
-    fontSize: '1rem',
-  },
-  form: {
-    width: '100%',
-  },
-  inputGroup: {
-    marginBottom: '20px',
-  },
-  inputWrapper: {
-    position: 'relative',
-  },
-  inputIcon: {
-    position: 'absolute',
-    left: '15px',
-    top: '50%',
-    transform: 'translateY(-50%)',
-    color: 'var(--primary-green)',
-    fontSize: '16px',
-  },
-  input: {
-    width: '100%',
-    padding: '15px 15px 15px 45px',
-    border: '1px solid #ddd',
-    borderRadius: '8px',
-    fontSize: '1rem',
-    transition: 'all 0.3s ease',
-    backgroundColor: '#f9f9f9',
-  },
-  submitButton: {
-    width: '100%',
-    padding: '15px',
-    backgroundColor: 'var(--primary-green)',
-    color: '#fff',
-    border: 'none',
-    borderRadius: '8px',
-    fontSize: '1rem',
-    fontWeight: '500',
-    cursor: 'pointer',
-    transition: 'all 0.3s ease',
-    marginTop: '10px',
-  },
-  errorMessage: {
-    color: '#e74c3c',
-    textAlign: 'center',
-    marginBottom: '15px',
-    fontSize: '0.9rem',
-  },
-  successMessage: {
-    color: '#2ecc71',
-    textAlign: 'center',
-    padding: '20px',
-    backgroundColor: '#f8f8f8',
-    borderRadius: '8px',
-    marginBottom: '20px',
-  },
-  successIcon: {
-    fontSize: '40px',
-    marginBottom: '10px',
-  },
-  loginLink: {
-    textAlign: 'center',
-    marginTop: '20px',
-    fontSize: '0.9rem',
-    color: '#666',
-  },
-  link: {
-    color: 'var(--primary-green)',
-    fontWeight: '500',
-    textDecoration: 'none',
-  },
-  authRight: {
+  imgSide: {
     flex: '1',
     backgroundImage: 'url("https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&q=80&w=2070")',
     backgroundSize: 'cover',
     backgroundPosition: 'center',
     position: 'relative',
+    transition: 'transform 0.5s ease-in-out',
+    transform: 'translateX(100%)',
   },
   overlay: {
     position: 'absolute',
@@ -331,7 +219,7 @@ const styles = {
     left: 0,
     right: 0,
     bottom: 0,
-    backgroundColor: 'rgba(0, 103, 55, 0.8)',
+    backgroundColor: 'rgba(0, 0, 0, 0.6)',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
@@ -341,33 +229,99 @@ const styles = {
     color: '#fff',
     textAlign: 'center',
   },
-  overlayTitle: {
-    fontSize: '2rem',
-    fontWeight: '700',
-    marginBottom: '15px',
-  },
-  overlayText: {
-    fontSize: '1.1rem',
-    marginBottom: '30px',
-  },
-  features: {
-    display: 'flex',
-    justifyContent: 'space-around',
-    marginTop: '30px',
-  },
-  featureItem: {
+  formSide: {
+    flex: '1',
     display: 'flex',
     flexDirection: 'column',
-    alignItems: 'center',
-    margin: '0 10px',
+    justifyContent: 'center',
+    padding: '40px',
+    backgroundColor: '#fff',
+    transition: 'transform 0.5s ease-in-out',
+    transform: 'translateX(-100%)',
   },
-  featureIcon: {
-    fontSize: '24px',
-    marginBottom: '10px',
-    color: '#fff',
+  formContainer: {
+    width: '100%',
   },
-  featureText: {
+  formTitle: {
+    textAlign: 'center',
+    marginBottom: '30px',
+    color: '#1a1a1a',
+    fontSize: '2rem',
+    fontWeight: '700',
+    letterSpacing: '2px',
+    position: 'relative',
+  },
+  form: {
+    width: '100%',
+  },
+  inputGroup: {
+    marginBottom: '20px',
+    transition: 'transform 0.3s ease, opacity 0.3s ease',
+  },
+  label: {
+    display: 'block',
+    marginBottom: '8px',
     fontSize: '0.9rem',
+    fontWeight: '500',
+    color: '#555',
+    transition: 'transform 0.3s ease',
+  },
+  input: {
+    width: '100%',
+    padding: '12px 15px',
+    border: '1px solid #ddd',
+    backgroundColor: '#f9f9f9',
+    fontSize: '1rem',
+    transition: 'all 0.3s ease',
+  },
+  submitButton: {
+    width: '100%',
+    padding: '14px',
+    backgroundColor: 'var(--primary-green)',
+    color: '#fff',
+    border: 'none',
+    cursor: 'pointer',
+    fontSize: '1rem',
+    fontWeight: '500',
+    letterSpacing: '1px',
+    textTransform: 'uppercase',
+    transition: 'all 0.3s ease',
+    marginTop: '10px',
+    position: 'relative',
+    overflow: 'hidden',
+  },
+  errorMessage: {
+    color: 'var(--primary-green)',
+    textAlign: 'center',
+    marginBottom: '15px',
+    fontSize: '0.9rem',
+    fontWeight: '500',
+  },
+  successMessage: {
+    color: '#34c759',
+    textAlign: 'center',
+    padding: '30px',
+    backgroundColor: '#f8f8f8',
+    borderRadius: '4px',
+    marginBottom: '20px',
+    animation: 'fadeIn 0.5s ease-in-out',
+    boxShadow: '0 5px 15px rgba(0,0,0,0.05)',
+    transition: 'all 0.3s ease',
+    transform: 'translateY(0)',
+  },
+  loginLink: {
+    textAlign: 'center',
+    marginTop: '25px',
+    fontSize: '0.9rem',
+    color: '#555',
+  },
+  link: {
+    color: 'var(--primary-green)',
+    fontWeight: '500',
+    textDecoration: 'none',
+    transition: 'all 0.3s ease',
+    position: 'relative',
+    display: 'inline-block',
   },
 };
 
@@ -378,20 +332,64 @@ style.textContent = `
     opacity: 1;
   }
   
-  .auth-page input:focus {
-    border-color: var(--primary-green);
-    box-shadow: 0 0 0 2px rgba(0, 103, 55, 0.2);
-    outline: none;
+  .auth-page .scale-up {
+    transform: scale(1);
   }
   
-  .auth-page .submitButton:hover {
-    background-color: #005c3a;
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(0, 103, 55, 0.3);
+  .auth-page .slide-from-left {
+    transform: translateX(0);
   }
   
-  .auth-page .link:hover {
-    text-decoration: underline;
+  .auth-page .slide-from-right {
+    transform: translateX(0);
+  }
+  
+  .auth-page label:focus-within {
+    transform: translateY(-5px);
+    color: var(--primary-green);
+  }
+  
+  .auth-page .hover-shadow:hover {
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    transform: translateY(-3px);
+  }
+  
+  .auth-page .hover-scale:hover {
+    transform: scale(1.05);
+  }
+  
+  .auth-page .successMessage div {
+    font-size: 50px;
+    color: #34c759;
+    margin-bottom: 20px;
+  }
+  
+  @keyframes buttonShine {
+    0% {
+      left: -100px;
+    }
+    20% {
+      left: 100%;
+    }
+    100% {
+      left: 100%;
+    }
+  }
+  
+  .auth-page button:after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -100px;
+    width: 70px;
+    height: 200%;
+    background: rgba(255, 255, 255, 0.2);
+    transform: rotate(25deg);
+    transition: all 0.7s ease-in-out;
+  }
+  
+  .auth-page button:hover:after {
+    animation: buttonShine 1s ease-in-out;
   }
 `;
 document.head.appendChild(style);

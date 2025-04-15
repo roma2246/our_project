@@ -50,27 +50,14 @@ const HomePage = () => {
         backgroundImage: 'url("https://images.unsplash.com/photo-1551836022-4c4c79ecde51?auto=format&fit=crop&q=80&w=2070")',
         width: '100%',
         margin: '0',
-        padding: '0',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        textAlign: 'center'
+        padding: '0'
       }}>
-        <div className="hero-content" style={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'center',
-          maxWidth: '800px',
-          padding: '0 20px',
-          margin: '0 auto'
-        }}>
-          <h1 className="animated-element slide-from-left" style={{textAlign: 'center'}}>Кәсіпкер</h1>
+        <div className="hero-content">
+          <h1 className="animated-element slide-from-left">Кәсіпкер</h1>
           <div className="animated-element fade-in" style={{display: 'flex', justifyContent: 'center', marginBottom: '20px'}}>
             <img src="/favicon.svg" alt="Кәсіпкер логотипі" style={{width: '80px', height: '80px'}} className="pulse" />
           </div>
-          <p className="animated-element slide-from-right" style={{textAlign: 'center', maxWidth: '600px'}}>Сіздің бизнесіңізді басқаруға арналған сенімді құрал. Кірістер мен шығыстарды оңай бақылаңыз.</p>
+          <p className="animated-element slide-from-right">Сіздің бизнесіңізді басқаруға арналған сенімді құрал. Кірістер мен шығыстарды оңай бақылаңыз.</p>
           <div className="button-container animated-element slide-from-bottom">
             {isLoggedIn ? (
               <div>
