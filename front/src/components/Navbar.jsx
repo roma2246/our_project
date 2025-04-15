@@ -9,6 +9,8 @@ const Navbar = () => {
       </div>
       <ul style={styles.navLinks}>
         <li><Link to="/" style={styles.link}>Басты бет</Link></li>
+        <li><Link to="/login" style={styles.link}>Кіру</Link></li>
+        <li><Link to="/register" style={styles.registerButton}>Тіркелу</Link></li>
       </ul>
     </nav>
   );
@@ -49,6 +51,16 @@ const styles = {
     padding: '0.5rem 0',
     borderBottom: '2px solid transparent',
     transition: 'color 0.3s ease, border-color 0.3s ease',
+  },
+  registerButton: {
+    textDecoration: 'none',
+    color: 'white',
+    backgroundColor: '#268bd2',
+    padding: '0.5rem 1rem',
+    borderRadius: '4px',
+    fontSize: '1rem',
+    fontWeight: '500',
+    transition: 'background-color 0.3s ease',
   },
 };
 
