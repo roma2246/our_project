@@ -34,7 +34,7 @@ const LoginPage = () => {
         body: JSON.stringify({ email, password }),
       });
       const data = await response.json();
-      
+
       if (!response.ok) {
         setError(data.message || 'Кіру кезінде қате орын алды');
       } else {
@@ -98,33 +98,33 @@ const LoginPage = () => {
         <div className={`${appear ? 'slide-from-right' : ''}`} style={styles.formSide}>
           <div style={styles.formContainer}>
             <h2 className="animated-element slide-from-top" style={titleStyles}>КІРУ</h2>
-            <form onSubmit={handleSubmit} style={styles.form}>
+      <form onSubmit={handleSubmit} style={styles.form}>
               <div className="animated-element fade-in" style={inputGroupStyles1}>
                 <label htmlFor="email" style={styles.label}>Электрондық пошта</label>
-                <input
-                  type="email"
-                  id="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  style={styles.input}
+          <input
+            type="email"
+            id="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            style={styles.input}
                   placeholder="email@example.com"
                   className="hover-shadow"
-                  required
-                />
-              </div>
+            required
+          />
+        </div>
               <div className="animated-element fade-in" style={inputGroupStyles2}>
                 <label htmlFor="password" style={styles.label}>Құпия сөз</label>
-                <input
-                  type="password"
-                  id="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  style={styles.input}
+          <input
+            type="password"
+            id="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            style={styles.input}
                   placeholder="••••••••"
                   className="hover-shadow"
-                  required
-                />
-              </div>
+            required
+          />
+        </div>
               {error && <p style={styles.errorMessage} className="shake">{error}</p>}
               <button 
                 type="submit" 
@@ -141,7 +141,7 @@ const LoginPage = () => {
               <p className="animated-element fade-in" style={registerLinkStyles}>
                 Аккаунтыңыз жоқ па? <Link to="/register" style={styles.link} className="hover-scale">Тіркелу</Link>
               </p>
-            </form>
+      </form>
           </div>
         </div>
       </div>

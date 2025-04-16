@@ -96,41 +96,41 @@ const RegisterPage = () => {
                 <p>Кіру бетіне ауысу...</p>
               </div>
             ) : (
-              <form onSubmit={handleSubmit} style={styles.form}>
+      <form onSubmit={handleSubmit} style={styles.form}>
                 <div className="animated-element slide-from-right" style={usernameGroupStyles}>
                   <label htmlFor="username" style={styles.label}>Пайдаланушы аты</label>
-                  <input
-                    type="text"
-                    id="username"
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
-                    style={styles.input}
+          <input
+            type="text"
+            id="username"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            style={styles.input}
                     placeholder="Пайдаланушы аты"
                     className="hover-shadow"
-                    required
-                  />
-                </div>
+            required
+          />
+        </div>
                 <div className="animated-element slide-from-right" style={emailGroupStyles}>
                   <label htmlFor="email" style={styles.label}>Электрондық пошта</label>
-                  <input
-                    type="email"
-                    id="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    style={styles.input}
+          <input
+            type="email"
+            id="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            style={styles.input}
                     placeholder="email@example.com"
                     className="hover-shadow"
-                    required
-                  />
-                </div>
+            required
+          />
+        </div>
                 <div className="animated-element slide-from-right" style={passwordGroupStyles}>
                   <label htmlFor="password" style={styles.label}>Құпия сөз</label>
-                  <input
-                    type="password"
-                    id="password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    style={styles.input}
+          <input
+            type="password"
+            id="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            style={styles.input}
                     placeholder="••••••••"
                     className="hover-shadow"
                     required
@@ -146,9 +146,9 @@ const RegisterPage = () => {
                     style={styles.input}
                     placeholder="••••••••"
                     className="hover-shadow"
-                    required
-                  />
-                </div>
+            required
+          />
+        </div>
                 {error && <p style={styles.errorMessage} className="shake">{error}</p>}
                 <button 
                   type="submit" 
@@ -165,7 +165,7 @@ const RegisterPage = () => {
                 <p className="animated-element fade-in" style={loginLinkStyles}>
                   Аккаунтыңыз бар ма? <Link to="/login" style={styles.link} className="hover-scale">Кіру</Link>
                 </p>
-              </form>
+      </form>
             )}
           </div>
         </div>
