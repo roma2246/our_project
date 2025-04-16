@@ -11,6 +11,7 @@ const Navbar = () => {
         <li><Link to="/" style={styles.link}>Басты бет</Link></li>
         <li><Link to="/login" style={styles.link}>Кіру</Link></li>
         <li><Link to="/register" style={styles.registerButton}>Тіркелу</Link></li>
+        <li><Link to="/finance" style={styles.link}>Қаржы</Link></li>
       </ul>
     </nav>
   );

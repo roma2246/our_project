@@ -21,8 +21,21 @@ const Login = () => {
     e.preventDefault();
     try {
       const response = await login(formData);
+      
+      // Сохраняем токен
       localStorage.setItem('token', response.token);
-      localStorage.setItem('user', JSON.stringify(response.user));
+      
+      // Создаем расширенный объект с данными пользователя
+      const userData = {
+        ...response.user,
+        createdAt: response.user.createdAt || new Date().toISOString(),
+        role: response.user.role || 'Пайдаланушы',
+        email: formData.email
+      };
+      
+      // Сохраняем данные пользователя
+      localStorage.setItem('userData', JSON.stringify(userData));
+      
       navigate('/');
     } catch (error) {
       setError(error.message);

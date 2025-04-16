@@ -30,8 +30,20 @@ const Register = () => {
     try {
       const { confirmPassword, ...registerData } = formData;
       const response = await register(registerData);
+      
+      // Сохраняем токен
       localStorage.setItem('token', response.token);
-      localStorage.setItem('user', JSON.stringify(response.user));
+      
+      // Сохраняем данные пользователя
+      const userData = {
+        ...response.user,
+        createdAt: response.user.createdAt || new Date().toISOString(),
+        role: response.user.role || 'Пайдаланушы',
+        email: registerData.email
+      };
+      
+      localStorage.setItem('userData', JSON.stringify(userData));
+      
       navigate('/');
     } catch (error) {
       setError(error.message);

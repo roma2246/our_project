@@ -27,7 +27,7 @@ const styles = {
   container: {
     padding: '2rem',
     fontFamily: 'Arial, sans-serif', // Негізгі қаріп
-    color: '#333', // Негізгі мәтін түсі
+    color: 'white',
     textAlign: 'center',
   },
   header: {
