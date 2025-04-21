@@ -118,6 +118,5 @@ const checkToken = async (req, res) => {
 
 module.exports = {
   register,
-  login,
-  checkToken
+  login
 }; 
