@@ -1,50 +1,51 @@
 const API_URL = 'http://localhost:5000/api';
 
-export const getTransactions = async () => {
-  const token = localStorage.getItem('token');
-  const response = await fetch(`${API_URL}/finances`, {
-    headers: {
-      'Authorization': `Bearer ${token}`
-    }
-  });
-
-  if (!response.ok) {
-    throw new Error('Failed to fetch transactions');
-  }
-
-  return response.json();
-};
-
 export const addTransaction = async (transactionData) => {
   const token = localStorage.getItem('token');
-  const response = await fetch(`${API_URL}/finances`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${token}`
-    },
-    body: JSON.stringify(transactionData)
-  });
+  const userId = JSON.parse(localStorage.getItem('user')).id;
 
-  if (!response.ok) {
-    throw new Error('Failed to add transaction');
+  try {
+    const response = await fetch(`${API_URL}/business_finances`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      body: JSON.stringify({
+        ...transactionData,
+        user_id: userId
+      })
+    });
+
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.message || 'Транзакцияны сақтау кезінде қате шықты');
+    }
+
+    return await response.json();
+  } catch (error) {
+    throw new Error(error.message || 'Серверге қосылу мүмкін болмады');
   }
-
-  return response.json();
 };
 
-export const deleteTransaction = async (transactionId) => {
+export const getTransactions = async () => {
   const token = localStorage.getItem('token');
-  const response = await fetch(`${API_URL}/finances/${transactionId}`, {
-    method: 'DELETE',
-    headers: {
-      'Authorization': `Bearer ${token}`
+  const userId = JSON.parse(localStorage.getItem('user')).id;
+
+  try {
+    const response = await fetch(`${API_URL}/business_finances?user_id=${userId}`, {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
+
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.message || 'Транзакцияларды жүктеу кезінде қате шықты');
     }
-  });
 
-  if (!response.ok) {
-    throw new Error('Failed to delete transaction');
+    return await response.json();
+  } catch (error) {
+    throw new Error(error.message || 'Серверге қосылу мүмкін болмады');
   }
-
-  return response.json();
 }; 

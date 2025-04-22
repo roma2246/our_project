@@ -2,6 +2,23 @@ const pool = require('../db');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
+const authenticateToken = (req, res, next) => {
+  const authHeader = req.headers['authorization'];
+  const token = authHeader && authHeader.split(' ')[1];
+
+  if (!token) {
+    return res.status(401).json({ message: 'Токен не предоставлен' });
+  }
+
+  jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
+    if (err) {
+      return res.status(403).json({ message: 'Недействительный токен' });
+    }
+    req.user = { id: user.userId };
+    next();
+  });
+};
+
 const register = async (req, res) => {
   try {
     const { username, email, password } = req.body;
@@ -88,35 +105,8 @@ const login = async (req, res) => {
   }
 };
 
-// Проверка токена
-const checkToken = async (req, res) => {
-  try {
-    const token = req.header('Authorization')?.replace('Bearer ', '');
-    
-    if (!token) {
-      return res.status(401).json({ message: 'Токен не предоставлен' });
-    }
-
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    
-    // Проверяем существование пользователя
-    const user = await pool.query(
-      'SELECT id, username, email FROM users WHERE id = $1',
-      [decoded.userId]
-    );
-
-    if (user.rows.length === 0) {
-      return res.status(401).json({ message: 'Пользователь не найден' });
-    }
-
-    res.json({ user: user.rows[0] });
-  } catch (error) {
-    console.error(error);
-    res.status(401).json({ message: 'Недействительный токен' });
-  }
-};
-
 module.exports = {
   register,
-  login
-}; 
+  login,
+  authenticateToken
+};

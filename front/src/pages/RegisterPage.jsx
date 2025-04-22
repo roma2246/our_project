@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 
 const RegisterPage = () => {
@@ -7,25 +7,15 @@ const RegisterPage = () => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
-  const [success, setSuccess] = useState('');
   const [loading, setLoading] = useState(false);
-  const [appear, setAppear] = useState(false);
   const navigate = useNavigate();
-
-  useEffect(() => {
-    // Animation on mount
-    setTimeout(() => {
-      setAppear(true);
-    }, 100);
-  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
-    setSuccess('');
     setLoading(true);
 
-    if (!username || !email || !password) {
+    if (!username || !email || !password || !confirmPassword) {
       setError('Барлық өрістерді толтырыңыз');
       setLoading(false);
       return;
@@ -49,132 +39,247 @@ const RegisterPage = () => {
       const data = await response.json();
 
       if (!response.ok) {
-        setError(data.message || 'Тіркелу кезінде қате орын алды');
-      } else {
-        setSuccess(data.message || 'Тіркелу сәтті өтті!');
-        setUsername('');
-        setEmail('');
-        setPassword('');
-        setConfirmPassword('');
-        
-        // Animate out before navigating
-        setTimeout(() => {
-          setAppear(false);
-          setTimeout(() => {
-            navigate('/login');
-          }, 300);
-        }, 1700);
+        throw new Error(data.message || 'Тіркелу кезінде қате орын алды');
       }
+
+      document.querySelector('.register-container').classList.add('fade-out');
+      setTimeout(() => {
+        navigate('/login');
+      }, 300);
+
     } catch (err) {
-      console.error('Fetch error:', err);
-      setError('Серверге қосылу мүмкін болмады');
-    } finally {
+      setError(err.message);
       setLoading(false);
     }
   };
 
-  // Define styles with animation delays
-  const titleStyles = { ...styles.formTitle, animationDelay: '0.3s' };
-  const usernameGroupStyles = { ...styles.inputGroup, animationDelay: '0.4s' };
-  const emailGroupStyles = { ...styles.inputGroup, animationDelay: '0.5s' };
-  const passwordGroupStyles = { ...styles.inputGroup, animationDelay: '0.6s' };
-  const confirmPasswordGroupStyles = { ...styles.inputGroup, animationDelay: '0.7s' };
-  const loginLinkStyles = { ...styles.loginLink, animationDelay: '1s' };
-  const overlayHeadingStyles = { animationDelay: '0.3s' };
-  const overlayParaStyles = { animationDelay: '0.5s' };
+  // Стили для RegisterPage
+  const styles = `
+    .register-page {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: #f5f5f5;
+    }
+
+    .register-container {
+      display: grid;
+      grid-template-columns: 1fr;
+      max-width: 1000px;
+      width: 100%;
+      margin: 20px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+      overflow: hidden;
+      border-radius: 10px;
+      background-color: white;
+    }
+
+    .image-side {
+      position: relative;
+      min-height: 300px;
+      background-image: url('https://images.unsplash.com/photo-1554224155-6726b3ff858f?auto=format&fit=crop&q=80&w=2111');
+      background-size: cover;
+      background-position: center;
+    }
+
+    .image-side .overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 127, 69, 0.8);
+      color: white;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 30px;
+      text-align: center;
+    }
+
+    .image-side h2 {
+      font-size: 2.5rem;
+      margin-bottom: 20px;
+    }
+
+    .image-side p {
+      font-size: 1.1rem;
+      max-width: 400px;
+    }
+
+    .form-side {
+      padding: 50px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .form-side h2 {
+      font-size: 2rem;
+      margin-bottom: 30px;
+      color: var(--primary-green);
+      text-align: center;
+    }
+
+    .input-group {
+      margin-bottom: 20px;
+    }
+
+    .input-group label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 500;
+    }
+
+    .input-group input {
+      width: 100%;
+      padding: 12px 15px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-size: 1rem;
+      transition: border 0.3s ease;
+    }
+
+    .input-group input:focus {
+      border-color: var(--primary-green);
+      outline: none;
+    }
+
+    .error-message {
+      color: #e74c3c;
+      margin-bottom: 20px;
+      padding: 10px;
+      background-color: rgba(231, 76, 60, 0.1);
+      border-radius: 4px;
+      text-align: center;
+    }
+
+    button[type="submit"] {
+      background-color: var(--primary-green);
+      color: white;
+      border: none;
+      padding: 12px;
+      font-size: 1rem;
+      font-weight: 600;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      width: 100%;
+      margin-top: 10px;
+    }
+
+    button[type="submit"]:hover {
+      background-color: #006a38;
+    }
+
+    button[type="submit"]:disabled {
+      background-color: #cccccc;
+      cursor: not-allowed;
+    }
+
+    .login-link {
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    .login-link a {
+      color: var(--primary-green);
+      font-weight: 500;
+      text-decoration: none;
+    }
+
+    .login-link a:hover {
+      text-decoration: underline;
+    }
+
+    .fade-out {
+      animation: fadeIn 0.3s ease reverse forwards;
+    }
+
+    @media (min-width: 768px) {
+      .register-container {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+  `;
+
+  // Добавляем стили
+  const styleElement = document.createElement('style');
+  styleElement.textContent = styles;
+  document.head.appendChild(styleElement);
 
   return (
-    <div className={`auth-page ${appear ? 'fade-in' : ''}`} style={styles.authPage}>
-      <div className={`${appear ? 'scale-up' : ''}`} style={styles.authContainer}>
-        <div className={`${appear ? 'slide-from-left' : ''}`} style={styles.formSide}>
-          <div style={styles.formContainer}>
-            <h2 className="animated-element slide-from-top" style={titleStyles}>ТІРКЕЛУ</h2>
-            {success ? (
-              <div style={styles.successMessage} className="animated-element pulse">
-                <div className="animated-element bounce" style={{animationDelay: '0.2s'}}>✓</div>
-                <p>{success}</p>
-                <p>Кіру бетіне ауысу...</p>
-              </div>
-            ) : (
-      <form onSubmit={handleSubmit} style={styles.form}>
-                <div className="animated-element slide-from-right" style={usernameGroupStyles}>
-                  <label htmlFor="username" style={styles.label}>Пайдаланушы аты</label>
-          <input
-            type="text"
-            id="username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            style={styles.input}
-                    placeholder="Пайдаланушы аты"
-                    className="hover-shadow"
-            required
-          />
-        </div>
-                <div className="animated-element slide-from-right" style={emailGroupStyles}>
-                  <label htmlFor="email" style={styles.label}>Электрондық пошта</label>
-          <input
-            type="email"
-            id="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            style={styles.input}
-                    placeholder="email@example.com"
-                    className="hover-shadow"
-            required
-          />
-        </div>
-                <div className="animated-element slide-from-right" style={passwordGroupStyles}>
-                  <label htmlFor="password" style={styles.label}>Құпия сөз</label>
-          <input
-            type="password"
-            id="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            style={styles.input}
-                    placeholder="••••••••"
-                    className="hover-shadow"
-                    required
-                  />
-                </div>
-                <div className="animated-element slide-from-right" style={confirmPasswordGroupStyles}>
-                  <label htmlFor="confirmPassword" style={styles.label}>Құпия сөзді қайталаңыз</label>
-                  <input
-                    type="password"
-                    id="confirmPassword"
-                    value={confirmPassword}
-                    onChange={(e) => setConfirmPassword(e.target.value)}
-                    style={styles.input}
-                    placeholder="••••••••"
-                    className="hover-shadow"
-            required
-          />
-        </div>
-                {error && <p style={styles.errorMessage} className="shake">{error}</p>}
-                <button 
-                  type="submit" 
-                  style={{...styles.submitButton, animationDelay: '0.8s'}}
-                  className="animated-element fade-in hover-shadow"
-                  disabled={loading}
-                >
-                  {loading ? (
-                    <span className="pulse">Күте тұрыңыз...</span>
-                  ) : (
-                    'ТІРКЕЛУ'
-                  )}
-                </button>
-                <p className="animated-element fade-in" style={loginLinkStyles}>
-                  Аккаунтыңыз бар ма? <Link to="/login" style={styles.link} className="hover-scale">Кіру</Link>
-                </p>
-      </form>
-            )}
-          </div>
-        </div>
-        <div className={`${appear ? 'slide-from-right' : ''}`} style={styles.imgSide}>
-          <div style={styles.overlay}>
-            <div style={styles.overlayContent}>
-              <h2 className="animated-element slide-from-bottom" style={overlayHeadingStyles}>Қош келдіңіз</h2>
-              <p className="animated-element slide-from-bottom" style={overlayParaStyles}>Тіркеліп, бизнесіңізді басқаруды бастаңыз</p>
+    <div className="register-page fade-in">
+      <div className="register-container">
+        <div className="form-side slide-from-left">
+          <h2>ТІРКЕЛУ</h2>
+          <form onSubmit={handleSubmit}>
+            <div className="input-group">
+              <label htmlFor="username">Пайдаланушы аты</label>
+              <input
+                type="text"
+                id="username"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                placeholder="Пайдаланушы аты"
+                required
+              />
             </div>
+
+            <div className="input-group">
+              <label htmlFor="email">Электрондық пошта</label>
+              <input
+                type="email"
+                id="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="email@example.com"
+                required
+              />
+            </div>
+
+            <div className="input-group">
+              <label htmlFor="password">Құпия сөз</label>
+              <input
+                type="password"
+                id="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="••••••••"
+                required
+              />
+            </div>
+
+            <div className="input-group">
+              <label htmlFor="confirmPassword">Құпия сөзді қайталаңыз</label>
+              <input
+                type="password"
+                id="confirmPassword"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                placeholder="••••••••"
+                required
+              />
+            </div>
+
+            {error && <div className="error-message fade-in">{error}</div>}
+
+            <button type="submit" disabled={loading} className="hover-scale">
+              {loading ? 'Күте тұрыңыз...' : 'ТІРКЕЛУ'}
+            </button>
+
+            <p className="login-link">
+              Аккаунтыңыз бар ма? <Link to="/login">Кіру</Link>
+            </p>
+          </form>
+        </div>
+        
+        <div className="image-side slide-from-right" style={{animationDelay: '0.2s'}}>
+          <div className="overlay">
+            <h2>Қош келдіңіз</h2>
+            <p>Тіркеліп, бизнесіңізді басқаруды бастаңыз</p>
           </div>
         </div>
       </div>
@@ -182,216 +287,4 @@ const RegisterPage = () => {
   );
 };
 
-const styles = {
-  authPage: {
-    minHeight: '100vh',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#f5f5f5',
-    padding: '20px',
-    transition: 'opacity 0.5s ease-in-out',
-    opacity: 0,
-  },
-  authContainer: {
-    display: 'flex',
-    width: '100%',
-    maxWidth: '1000px',
-    height: '700px',
-    boxShadow: '0 10px 30px rgba(0, 0, 0, 0.1)',
-    backgroundColor: '#fff',
-    overflow: 'hidden',
-    transition: 'all 0.5s ease-in-out',
-    transform: 'scale(0.95)',
-  },
-  imgSide: {
-    flex: '1',
-    backgroundImage: 'url("https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&q=80&w=2070")',
-    backgroundSize: 'cover',
-    backgroundPosition: 'center',
-    position: 'relative',
-    transition: 'transform 0.5s ease-in-out',
-    transform: 'translateX(100%)',
-  },
-  overlay: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    backgroundColor: 'rgba(0, 0, 0, 0.6)',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: '40px',
-  },
-  overlayContent: {
-    color: '#fff',
-    textAlign: 'center',
-  },
-  formSide: {
-    flex: '1',
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    padding: '40px',
-    backgroundColor: '#fff',
-    transition: 'transform 0.5s ease-in-out',
-    transform: 'translateX(-100%)',
-  },
-  formContainer: {
-    width: '100%',
-  },
-  formTitle: {
-    textAlign: 'center',
-    marginBottom: '30px',
-    color: '#1a1a1a',
-    fontSize: '2rem',
-    fontWeight: '700',
-    letterSpacing: '2px',
-    position: 'relative',
-  },
-  form: {
-    width: '100%',
-  },
-  inputGroup: {
-    marginBottom: '20px',
-    transition: 'transform 0.3s ease, opacity 0.3s ease',
-  },
-  label: {
-    display: 'block',
-    marginBottom: '8px',
-    fontSize: '0.9rem',
-    fontWeight: '500',
-    color: '#555',
-    transition: 'transform 0.3s ease',
-  },
-  input: {
-    width: '100%',
-    padding: '12px 15px',
-    border: '1px solid #ddd',
-    backgroundColor: '#f9f9f9',
-    fontSize: '1rem',
-    transition: 'all 0.3s ease',
-  },
-  submitButton: {
-    width: '100%',
-    padding: '14px',
-    backgroundColor: 'var(--primary-green)',
-    color: '#fff',
-    border: 'none',
-    cursor: 'pointer',
-    fontSize: '1rem',
-    fontWeight: '500',
-    letterSpacing: '1px',
-    textTransform: 'uppercase',
-    transition: 'all 0.3s ease',
-    marginTop: '10px',
-    position: 'relative',
-    overflow: 'hidden',
-  },
-  errorMessage: {
-    color: 'var(--primary-green)',
-    textAlign: 'center',
-    marginBottom: '15px',
-    fontSize: '0.9rem',
-    fontWeight: '500',
-  },
-  successMessage: {
-    color: '#34c759',
-    textAlign: 'center',
-    padding: '30px',
-    backgroundColor: '#f8f8f8',
-    borderRadius: '4px',
-    marginBottom: '20px',
-    animation: 'fadeIn 0.5s ease-in-out',
-    boxShadow: '0 5px 15px rgba(0,0,0,0.05)',
-    transition: 'all 0.3s ease',
-    transform: 'translateY(0)',
-  },
-  loginLink: {
-    textAlign: 'center',
-    marginTop: '25px',
-    fontSize: '0.9rem',
-    color: '#555',
-  },
-  link: {
-    color: 'var(--primary-green)',
-    fontWeight: '500',
-    textDecoration: 'none',
-    transition: 'all 0.3s ease',
-    position: 'relative',
-    display: 'inline-block',
-  },
-};
-
-// Add dynamic styles for animations
-const style = document.createElement('style');
-style.textContent = `
-  .auth-page.fade-in {
-    opacity: 1;
-  }
-  
-  .auth-page .scale-up {
-    transform: scale(1);
-  }
-  
-  .auth-page .slide-from-left {
-    transform: translateX(0);
-  }
-  
-  .auth-page .slide-from-right {
-    transform: translateX(0);
-  }
-  
-  .auth-page label:focus-within {
-    transform: translateY(-5px);
-    color: var(--primary-green);
-  }
-  
-  .auth-page .hover-shadow:hover {
-    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-    transform: translateY(-3px);
-  }
-  
-  .auth-page .hover-scale:hover {
-    transform: scale(1.05);
-  }
-  
-  .auth-page .successMessage div {
-    font-size: 50px;
-    color: #34c759;
-    margin-bottom: 20px;
-  }
-  
-  @keyframes buttonShine {
-    0% {
-      left: -100px;
-    }
-    20% {
-      left: 100%;
-    }
-    100% {
-      left: 100%;
-    }
-  }
-  
-  .auth-page button:after {
-    content: '';
-    position: absolute;
-    top: -50%;
-    left: -100px;
-    width: 70px;
-    height: 200%;
-    background: rgba(255, 255, 255, 0.2);
-    transform: rotate(25deg);
-    transition: all 0.7s ease-in-out;
-  }
-  
-  .auth-page button:hover:after {
-    animation: buttonShine 1s ease-in-out;
-  }
-`;
-document.head.appendChild(style);
-
-export default RegisterPage; 
+export default RegisterPage;

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 
 const LoginPage = () => {
@@ -6,15 +6,7 @@ const LoginPage = () => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-  const [appear, setAppear] = useState(false);
   const navigate = useNavigate();
-
-  useEffect(() => {
-    // Animation on mount
-    setTimeout(() => {
-      setAppear(true);
-    }, 100);
-  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -33,314 +25,238 @@ const LoginPage = () => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),
       });
+
       const data = await response.json();
 
       if (!response.ok) {
-        setError(data.message || 'Кіру кезінде қате орын алды');
-      } else {
-        localStorage.setItem('token', data.token);
-        localStorage.setItem('userId', data.userId);
-        localStorage.setItem('username', data.username);
-        // Animation before redirect
-        setAppear(false);
-        setTimeout(() => {
-          navigate('/');
-          window.location.reload();
-        }, 300);
+        throw new Error(data.message || 'Кіру кезінде қате орын алды');
       }
+
+      // Сохраняем токен
+      localStorage.setItem('token', data.token);
+      // Сохраняем данные пользователя
+      localStorage.setItem('user', JSON.stringify(data.user));
+
+      document.querySelector('.login-container').classList.add('fade-out');
+      setTimeout(() => {
+        navigate('/');
+        window.location.reload();
+      }, 300);
+
     } catch (err) {
-      console.error('Fetch error:', err);
-      setError('Серверге қосылу мүмкін болмады');
-    } finally {
+      setError(err.message);
       setLoading(false);
     }
   };
 
-  const titleStyles = {
-    ...styles.formTitle,
-    animationDelay: '0.3s'
-  };
+  // Стили для LoginPage
+  const styles = `
+    .login-page {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: #f5f5f5;
+    }
 
-  const inputGroupStyles1 = {
-    ...styles.inputGroup,
-    animationDelay: '0.5s'
-  };
+    .login-container {
+      display: grid;
+      grid-template-columns: 1fr;
+      max-width: 1000px;
+      width: 100%;
+      margin: 20px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+      overflow: hidden;
+      border-radius: 10px;
+      background-color: white;
+    }
 
-  const inputGroupStyles2 = {
-    ...styles.inputGroup,
-    animationDelay: '0.7s'
-  };
+    .image-side {
+      position: relative;
+      min-height: 300px;
+      background-image: url('https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&q=80&w=2070');
+      background-size: cover;
+      background-position: center;
+    }
 
-  const registerLinkStyles = {
-    ...styles.registerLink,
-    animationDelay: '1s'
-  };
+    .image-side .overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 127, 69, 0.8);
+      color: white;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 30px;
+      text-align: center;
+    }
 
-  const overlayHeadingStyles = {
-    animationDelay: '0.3s'
-  };
+    .image-side h2 {
+      font-size: 2.5rem;
+      margin-bottom: 20px;
+    }
 
-  const overlayParaStyles = {
-    animationDelay: '0.5s'
-  };
+    .image-side p {
+      font-size: 1.1rem;
+      max-width: 400px;
+    }
+
+    .form-side {
+      padding: 50px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .form-side h2 {
+      font-size: 2rem;
+      margin-bottom: 30px;
+      color: var(--primary-green);
+      text-align: center;
+    }
+
+    .input-group {
+      margin-bottom: 20px;
+    }
+
+    .input-group label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 500;
+    }
+
+    .input-group input {
+      width: 100%;
+      padding: 12px 15px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-size: 1rem;
+      transition: border 0.3s ease;
+    }
+
+    .input-group input:focus {
+      border-color: var(--primary-green);
+      outline: none;
+    }
+
+    .error-message {
+      color: #e74c3c;
+      margin-bottom: 20px;
+      padding: 10px;
+      background-color: rgba(231, 76, 60, 0.1);
+      border-radius: 4px;
+      text-align: center;
+    }
+
+    button[type="submit"] {
+      background-color: var(--primary-green);
+      color: white;
+      border: none;
+      padding: 12px;
+      font-size: 1rem;
+      font-weight: 600;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      width: 100%;
+      margin-top: 10px;
+    }
+
+    button[type="submit"]:hover {
+      background-color: #006a38;
+    }
+
+    button[type="submit"]:disabled {
+      background-color: #cccccc;
+      cursor: not-allowed;
+    }
+
+    .register-link {
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    .register-link a {
+      color: var(--primary-green);
+      font-weight: 500;
+      text-decoration: none;
+    }
+
+    .register-link a:hover {
+      text-decoration: underline;
+    }
+
+    .fade-out {
+      animation: fadeIn 0.3s ease reverse forwards;
+    }
+
+    @media (min-width: 768px) {
+      .login-container {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+  `;
+
+  // Добавляем стили
+  const styleElement = document.createElement('style');
+  styleElement.textContent = styles;
+  document.head.appendChild(styleElement);
 
   return (
-    <div className={`auth-page ${appear ? 'fade-in' : ''}`} style={styles.authPage}>
-      <div className={`${appear ? 'scale-up' : ''}`} style={styles.authContainer}>
-        <div className={`${appear ? 'slide-from-left' : ''}`} style={styles.imgSide}>
-          <div style={styles.overlay}>
-            <div style={styles.overlayContent}>
-              <h2 className="animated-element slide-from-bottom" style={overlayHeadingStyles}>Қош келдіңіз</h2>
-              <p className="animated-element slide-from-bottom" style={overlayParaStyles}>Жүйеге кіріп, бизнесіңізді басқара бастаңыз</p>
+    <div className="login-page fade-in">
+      <div className="login-container">
+        <div className="image-side slide-from-left">
+          <div className="overlay">
+            <h2>Қош келдіңіз</h2>
+            <p>Жүйеге кіріп, бизнесіңізді басқара бастаңыз</p>
+          </div>
+        </div>
+        
+        <div className="form-side slide-from-right" style={{animationDelay: '0.2s'}}>
+          <h2>КІРУ</h2>
+          <form onSubmit={handleSubmit}>
+            <div className="input-group">
+              <label htmlFor="email">Электрондық пошта</label>
+              <input
+                type="email"
+                id="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="email@example.com"
+                required
+              />
             </div>
-          </div>
-        </div>
-        <div className={`${appear ? 'slide-from-right' : ''}`} style={styles.formSide}>
-          <div style={styles.formContainer}>
-            <h2 className="animated-element slide-from-top" style={titleStyles}>КІРУ</h2>
-      <form onSubmit={handleSubmit} style={styles.form}>
-              <div className="animated-element fade-in" style={inputGroupStyles1}>
-                <label htmlFor="email" style={styles.label}>Электрондық пошта</label>
-          <input
-            type="email"
-            id="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            style={styles.input}
-                  placeholder="email@example.com"
-                  className="hover-shadow"
-            required
-          />
-        </div>
-              <div className="animated-element fade-in" style={inputGroupStyles2}>
-                <label htmlFor="password" style={styles.label}>Құпия сөз</label>
-          <input
-            type="password"
-            id="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            style={styles.input}
-                  placeholder="••••••••"
-                  className="hover-shadow"
-            required
-          />
-        </div>
-              {error && <p style={styles.errorMessage} className="shake">{error}</p>}
-              <button 
-                type="submit" 
-                style={styles.submitButton}
-                className="animated-element slide-from-bottom hover-shadow"
-                disabled={loading}
-              >
-                {loading ? (
-                  <span className="pulse">Күте тұрыңыз...</span>
-                ) : (
-                  'КІРУ'
-                )}
-              </button>
-              <p className="animated-element fade-in" style={registerLinkStyles}>
-                Аккаунтыңыз жоқ па? <Link to="/register" style={styles.link} className="hover-scale">Тіркелу</Link>
-              </p>
-      </form>
-          </div>
+
+            <div className="input-group">
+              <label htmlFor="password">Құпия сөз</label>
+              <input
+                type="password"
+                id="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="••••••••"
+                required
+              />
+            </div>
+
+            {error && <div className="error-message fade-in">{error}</div>}
+
+            <button type="submit" disabled={loading} className="hover-scale">
+              {loading ? 'Күте тұрыңыз...' : 'КІРУ'}
+            </button>
+
+            <p className="register-link">
+              Аккаунтыңыз жоқ па? <Link to="/register">Тіркелу</Link>
+            </p>
+          </form>
         </div>
       </div>
     </div>
   );
 };
 
-const styles = {
-  authPage: {
-    minHeight: '100vh',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#f5f5f5',
-    padding: '20px',
-    transition: 'opacity 0.5s ease-in-out',
-    opacity: 0,
-  },
-  authContainer: {
-    display: 'flex',
-    width: '100%',
-    maxWidth: '1000px',
-    height: '600px',
-    boxShadow: '0 10px 30px rgba(0, 0, 0, 0.1)',
-    backgroundColor: '#fff',
-    overflow: 'hidden',
-    transition: 'all 0.5s ease',
-    transform: 'scale(0.95)',
-  },
-  imgSide: {
-    flex: '1',
-    backgroundImage: 'url("https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&q=80&w=2070")',
-    backgroundSize: 'cover',
-    backgroundPosition: 'center',
-    position: 'relative',
-    transition: 'transform 0.5s ease',
-    transform: 'translateX(-100%)',
-  },
-  overlay: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    backgroundColor: 'rgba(0, 0, 0, 0.6)',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: '40px',
-  },
-  overlayContent: {
-    color: '#fff',
-    textAlign: 'center',
-  },
-  formSide: {
-    flex: '1',
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    padding: '40px',
-    transition: 'transform 0.5s ease',
-    transform: 'translateX(100%)',
-    backgroundColor: '#fff',
-  },
-  formContainer: {
-    width: '100%',
-  },
-  formTitle: {
-    textAlign: 'center',
-    marginBottom: '30px',
-    color: '#1a1a1a',
-    fontSize: '2rem',
-    fontWeight: '700',
-    letterSpacing: '2px',
-    position: 'relative',
-  },
-  form: {
-    width: '100%',
-  },
-  inputGroup: {
-    marginBottom: '25px',
-    transition: 'transform 0.3s ease, opacity 0.3s ease',
-  },
-  label: {
-    display: 'block',
-    marginBottom: '8px',
-    fontSize: '0.9rem',
-    fontWeight: '500',
-    color: '#555',
-    transition: 'transform 0.3s ease',
-  },
-  input: {
-    width: '100%',
-    padding: '12px 15px',
-    border: '1px solid #ddd',
-    backgroundColor: '#f9f9f9',
-    fontSize: '1rem',
-    transition: 'all 0.3s ease',
-  },
-  submitButton: {
-    width: '100%',
-    padding: '14px',
-    backgroundColor: 'var(--primary-green)',
-    color: '#fff',
-    border: 'none',
-    cursor: 'pointer',
-    fontSize: '1rem',
-    fontWeight: '500',
-    letterSpacing: '1px',
-    textTransform: 'uppercase',
-    transition: 'all 0.3s ease',
-    marginTop: '10px',
-    position: 'relative',
-    overflow: 'hidden',
-  },
-  errorMessage: {
-    color: 'var(--primary-green)',
-    textAlign: 'center',
-    marginBottom: '15px',
-    fontSize: '0.9rem',
-    fontWeight: '500',
-  },
-  registerLink: {
-    textAlign: 'center',
-    marginTop: '25px',
-    fontSize: '0.9rem',
-    color: '#555',
-  },
-  link: {
-    color: 'var(--primary-green)',
-    fontWeight: '500',
-    textDecoration: 'none',
-    transition: 'all 0.3s ease',
-    position: 'relative',
-    display: 'inline-block',
-  },
-};
-
-// Add dynamic styles for animations
-const style = document.createElement('style');
-style.textContent = `
-  .auth-page.fade-in {
-    opacity: 1;
-  }
-  
-  .auth-page .scale-up {
-    transform: scale(1);
-  }
-  
-  .auth-page .slide-from-left {
-    transform: translateX(0);
-  }
-  
-  .auth-page .slide-from-right {
-    transform: translateX(0);
-  }
-  
-  .auth-page label:focus-within {
-    transform: translateY(-5px);
-    color: var(--primary-green);
-  }
-  
-  .auth-page .hover-shadow:hover {
-    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-    transform: translateY(-3px);
-  }
-  
-  .auth-page .hover-scale:hover {
-    transform: scale(1.05);
-  }
-  
-  @keyframes buttonShine {
-    0% {
-      left: -100px;
-    }
-    20% {
-      left: 100%;
-    }
-    100% {
-      left: 100%;
-    }
-  }
-  
-  .auth-page button:after {
-    content: '';
-    position: absolute;
-    top: -50%;
-    left: -100px;
-    width: 70px;
-    height: 200%;
-    background: rgba(255, 255, 255, 0.2);
-    transform: rotate(25deg);
-    transition: all 0.7s ease-in-out;
-  }
-  
-  .auth-page button:hover:after {
-    animation: buttonShine 1s ease-in-out;
-  }
-`;
-document.head.appendChild(style);
-
-export default LoginPage; 
+export default LoginPage;
